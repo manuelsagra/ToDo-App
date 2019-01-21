@@ -9,22 +9,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.manuelsagra.todo.R
+import com.manuelsagra.todo.data.model.Task
 import com.manuelsagra.todo.util.DateHelper
-import com.manuelsagra.todo.util.IconButton
 import kotlinx.android.synthetic.main.item_task.view.*
 
-class TaskAdapter(val listener: Listener) : ListAdapter<com.manuelsagra.todo.data.model.Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil.getInstance()) {
+class TaskAdapter(val listener: Listener) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil.getInstance()) {
 
     interface Listener {
-        fun onTaskClicked(task: com.manuelsagra.todo.data.model.Task)
-        fun onTaskMarked(task: com.manuelsagra.todo.data.model.Task, isDone: Boolean)
-        fun onTaskLongClicked(task: com.manuelsagra.todo.data.model.Task)
-        fun onTaskHighPriorityMarked(task: com.manuelsagra.todo.data.model.Task, isHighPriority: Boolean)
+        fun onTaskClicked(task: Task)
+        fun onTaskMarked(task: Task, isDone: Boolean)
+        fun onTaskLongClicked(task: Task)
+        fun onTaskHighPriorityMarked(task: Task, isHighPriority: Boolean)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -38,7 +39,7 @@ class TaskAdapter(val listener: Listener) : ListAdapter<com.manuelsagra.todo.dat
 
     inner class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(task: com.manuelsagra.todo.data.model.Task) {
+        fun bind(task: Task) {
             with(itemView) {
                 if (task.isDone) {
                     applyStrikethrough(textContent, task.content)
@@ -79,11 +80,11 @@ class TaskAdapter(val listener: Listener) : ListAdapter<com.manuelsagra.todo.dat
             }
         }
 
-        private fun applyColorToHighPriority(view: IconButton, isHighPriority: Boolean) {
+        private fun applyColorToHighPriority(view: ImageButton, isHighPriority: Boolean) {
             if (isHighPriority) {
-                view.setColorDrawable(Color.RED)
+                view.setColorFilter(Color.RED)
             } else {
-                view.setColorDrawable(Color.WHITE)
+                view.setColorFilter(Color.WHITE)
             }
         }
 

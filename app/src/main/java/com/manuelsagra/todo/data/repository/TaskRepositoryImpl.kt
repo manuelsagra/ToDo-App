@@ -1,26 +1,28 @@
 package com.manuelsagra.todo.data.repository
 
+import com.manuelsagra.todo.data.model.Task
+import com.manuelsagra.todo.data.repository.datasource.local.LocalDataSource
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class TaskRepositoryImpl(val localDataSource: com.manuelsagra.todo.data.repository.datasource.local.LocalDataSource) :
-    com.manuelsagra.todo.data.repository.TaskRepository {
+class TaskRepositoryImpl(val localDataSource: LocalDataSource) :
+    TaskRepository {
 
-    override fun getAll(): Single<List<com.manuelsagra.todo.data.model.Task>> = localDataSource.getAll()
+    override fun getAll(): Single<List<Task>> = localDataSource.getAll()
 
-    override fun observeAll(): Flowable<List<com.manuelsagra.todo.data.model.Task>> = localDataSource.observeAll()
+    override fun observeAll(): Flowable<List<Task>> = localDataSource.observeAll()
 
-    override fun getTaskById(taskId: Long): Single<com.manuelsagra.todo.data.model.Task> = localDataSource.getTaskById(taskId)
+    override fun getTaskById(taskId: Long): Single<Task> = localDataSource.getTaskById(taskId)
 
-    override fun insert(task: com.manuelsagra.todo.data.model.Task) {
+    override fun insert(task: Task) {
         localDataSource.insert(task)
     }
 
-    override fun delete(task: com.manuelsagra.todo.data.model.Task) {
+    override fun delete(task: Task) {
         localDataSource.delete(task)
     }
 
-    override fun update(task: com.manuelsagra.todo.data.model.Task) {
+    override fun update(task: Task) {
         localDataSource.update(task)
     }
 

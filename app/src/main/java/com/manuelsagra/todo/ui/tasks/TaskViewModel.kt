@@ -2,6 +2,8 @@ package com.manuelsagra.todo.ui.tasks
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.manuelsagra.todo.data.model.Task
+import com.manuelsagra.todo.data.repository.TaskRepository
 import com.manuelsagra.todo.ui.base.BaseViewModel
 import com.manuelsagra.todo.util.Event
 import com.manuelsagra.todo.util.call
@@ -12,12 +14,12 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class TaskViewModel(val taskRepository: com.manuelsagra.todo.data.repository.TaskRepository) : BaseViewModel() {
+class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
 
-    val tasksEvent = MutableLiveData<List<com.manuelsagra.todo.data.model.Task>>()
+    val tasksEvent = MutableLiveData<List<Task>>()
 
     val newTaskAddedEvent = MutableLiveData<Event<Unit>>()
-    val taskUpdatedEvent = MutableLiveData<Event<com.manuelsagra.todo.data.model.Task>>()
+    val taskUpdatedEvent = MutableLiveData<Event<Task>>()
 
     init {
         loadTasks()
@@ -39,7 +41,7 @@ class TaskViewModel(val taskRepository: com.manuelsagra.todo.data.repository.Tas
     }
 
     fun addNewTask(taskContent: String, isHighPriority: Boolean) {
-        val newTask = com.manuelsagra.todo.data.model.Task(0, taskContent, Date(), false, isHighPriority)
+        val newTask = Task(0, taskContent, Date(), false, isHighPriority)
 
         Completable.fromCallable {
             taskRepository.insert(newTask)
@@ -57,7 +59,7 @@ class TaskViewModel(val taskRepository: com.manuelsagra.todo.data.repository.Tas
             .addTo(compositeDisposable)
     }
 
-    fun deleteTask(task: com.manuelsagra.todo.data.model.Task) {
+    fun deleteTask(task: Task) {
         Completable.fromCallable {
             taskRepository.delete(task)
         }
@@ -73,7 +75,7 @@ class TaskViewModel(val taskRepository: com.manuelsagra.todo.data.repository.Tas
             .addTo(compositeDisposable)
     }
 
-    fun markAsDone(task: com.manuelsagra.todo.data.model.Task) {
+    fun markAsDone(task: Task) {
         if (task.isDone) {
             return
         }
@@ -82,7 +84,7 @@ class TaskViewModel(val taskRepository: com.manuelsagra.todo.data.repository.Tas
         updateTask(newTask)
     }
 
-    fun markAsNotDone(task: com.manuelsagra.todo.data.model.Task) {
+    fun markAsNotDone(task: Task) {
         if (!task.isDone) {
             return
         }
@@ -91,12 +93,12 @@ class TaskViewModel(val taskRepository: com.manuelsagra.todo.data.repository.Tas
         updateTask(newTask)
     }
 
-    fun markHighPriority(task: com.manuelsagra.todo.data.model.Task, highPriority: Boolean) {
+    fun markHighPriority(task: Task, highPriority: Boolean) {
         val newTask = task.copy(isHighPriority = highPriority)
         updateTask(newTask)
     }
 
-    fun updateTask(task: com.manuelsagra.todo.data.model.Task) {
+    fun updateTask(task: Task) {
         Completable.fromCallable {
             taskRepository.update(task)
         }

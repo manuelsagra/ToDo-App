@@ -32,12 +32,12 @@ data class Task(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<com.manuelsagra.todo.data.model.Task> {
-        override fun createFromParcel(parcel: Parcel): com.manuelsagra.todo.data.model.Task {
+    companion object CREATOR : Parcelable.Creator<Task> {
+        override fun createFromParcel(parcel: Parcel): Task {
             return com.manuelsagra.todo.data.model.Task(parcel)
         }
 
-        override fun newArray(size: Int): Array<com.manuelsagra.todo.data.model.Task?> {
+        override fun newArray(size: Int): Array<Task?> {
             return arrayOfNulls(size)
         }
     }

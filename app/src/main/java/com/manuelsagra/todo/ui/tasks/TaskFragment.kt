@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.manuelsagra.todo.R
+import com.manuelsagra.todo.data.model.Task
 import com.manuelsagra.todo.util.Navigator
 import com.manuelsagra.todo.util.bottomsheet.BottomMenuItem
 import com.manuelsagra.todo.util.bottomsheet.BottomSheetMenu
@@ -50,11 +51,11 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
         recyclerTasks.adapter = adapter
     }
 
-    override fun onTaskClicked(task: com.manuelsagra.todo.data.model.Task) {
+    override fun onTaskClicked(task: Task) {
 
     }
 
-    override fun onTaskLongClicked(task: com.manuelsagra.todo.data.model.Task) {
+    override fun onTaskLongClicked(task: Task) {
         val items = arrayListOf(
             BottomMenuItem(R.drawable.ic_edit, getString(R.string.edit)) {
                 Navigator.navigateToEditTaskFragment(task, childFragmentManager)
@@ -67,7 +68,7 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
         BottomSheetMenu(activity!!, items).show()
     }
 
-    private fun showConfirmDeleteTaskDialog(task: com.manuelsagra.todo.data.model.Task) {
+    private fun showConfirmDeleteTaskDialog(task: Task) {
         AlertDialog.Builder(activity!!)
             .setTitle(R.string.delete_task_title)
             .setMessage(R.string.delete_task_message)
@@ -79,7 +80,7 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
             .show()
     }
 
-    override fun onTaskMarked(task: com.manuelsagra.todo.data.model.Task, isDone: Boolean) {
+    override fun onTaskMarked(task: Task, isDone: Boolean) {
         if (isDone) {
             taskViewModel.markAsDone(task)
         } else {
@@ -87,7 +88,7 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
         }
     }
 
-    override fun onTaskHighPriorityMarked(task: com.manuelsagra.todo.data.model.Task, isHighPriority: Boolean) {
+    override fun onTaskHighPriorityMarked(task: Task, isHighPriority: Boolean) {
         taskViewModel.markHighPriority(task, isHighPriority)
     }
 
