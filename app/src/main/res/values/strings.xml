@@ -14,4 +14,8 @@
 
     <string name="edit_task_input_hint">Edit task content</string>
     <string name="new_task_is_high_priority">High priority</string>
+    <string name="priority_low">Low priority</string>
+    <string name="priority_medium">Medium priority</string>
+    <string name="priority_high">High priority</string>
+    <string name="priority_very_high">Very high priority</string>
 </resources>

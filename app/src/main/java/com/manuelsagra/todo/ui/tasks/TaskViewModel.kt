@@ -40,8 +40,8 @@ class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
             ).addTo(compositeDisposable)
     }
 
-    fun addNewTask(taskContent: String, isHighPriority: Boolean) {
-        val newTask = Task(0, taskContent, Date(), false, isHighPriority)
+    fun addNewTask(taskContent: String, priority: Int) {
+        val newTask = Task(0, 0, taskContent, Date(), false, priority)
 
         Completable.fromCallable {
             taskRepository.insert(newTask)
@@ -93,8 +93,8 @@ class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
         updateTask(newTask)
     }
 
-    fun markHighPriority(task: Task, highPriority: Boolean) {
-        val newTask = task.copy(isHighPriority = highPriority)
+    fun setPriority(task: Task, priority: Int) {
+        val newTask = task.copy(priority = priority)
         updateTask(newTask)
     }
 

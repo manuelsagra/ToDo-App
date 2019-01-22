@@ -22,7 +22,7 @@
             android:ellipsize="end"
             tools:text="Lorem ipsum amet apd pawd po  pdoawk dap widj a oijda jdoiawj wioadj aw joiaj dowia dam awlkdm wad"
             style="@style/TaskContent"
-            app:layout_constraintStart_toEndOf="@+id/buttonHighPriority"
+            app:layout_constraintStart_toEndOf="@+id/buttonPriority"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/checkIsDone"
             android:layout_marginStart="8dp"/>
@@ -50,7 +50,7 @@
             app:layout_constraintStart_toStartOf="@+id/textContent"/>
 
     <ImageButton
-            android:id="@+id/buttonHighPriority"
+            android:id="@+id/buttonPriority"
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:layout_constraintStart_toStartOf="parent"

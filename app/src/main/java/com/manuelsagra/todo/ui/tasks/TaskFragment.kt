@@ -88,8 +88,8 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
         }
     }
 
-    override fun onTaskHighPriorityMarked(task: Task, isHighPriority: Boolean) {
-        taskViewModel.markHighPriority(task, isHighPriority)
+    override fun onTaskPriorityChanged(task: Task, priority: Int) {
+        taskViewModel.setPriority(task, priority)
     }
 
 }

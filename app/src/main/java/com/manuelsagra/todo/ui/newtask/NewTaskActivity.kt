@@ -6,12 +6,17 @@ import androidx.lifecycle.Observer
 import com.manuelsagra.todo.R
 import com.manuelsagra.todo.ui.base.BaseActivity
 import com.manuelsagra.todo.ui.tasks.TaskViewModel
+import com.manuelsagra.todo.util.TASK_PRIORITY_HIGH
+import com.manuelsagra.todo.util.TASK_PRIORITY_LOW
+import com.manuelsagra.todo.util.TASK_PRIORITY_MEDIUM
+import com.manuelsagra.todo.util.TASK_PRIORITY_VERY_HIGH
 import kotlinx.android.synthetic.main.activity_new_task.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewTaskActivity : BaseActivity() {
 
-    val taskViewModel: TaskViewModel by viewModel()
+    private val taskViewModel: TaskViewModel by viewModel()
+    private var priority: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +26,8 @@ class NewTaskActivity : BaseActivity() {
 
         bindObserver()
         bindActions()
+
+        radioPriorityLow.isChecked = true
     }
 
     private fun bindObserver() {
@@ -38,7 +45,24 @@ class NewTaskActivity : BaseActivity() {
 
     private fun bindActions() {
         buttonSaveTask.setOnClickListener {
-            taskViewModel.addNewTask(inputTaskContent.text.toString(), checkHighPriority.isChecked)
+            // TODO Priority
+            taskViewModel.addNewTask(inputTaskContent.text.toString(), priority)
+        }
+
+        radioPriorityLow.setOnClickListener {
+            priority = TASK_PRIORITY_LOW
+        }
+
+        radioPriorityMedium.setOnClickListener {
+            priority = TASK_PRIORITY_MEDIUM
+        }
+
+        radioPriorityHigh.setOnClickListener {
+            priority = TASK_PRIORITY_HIGH
+        }
+
+        radioPriorityVeryHigh.setOnClickListener {
+            priority = TASK_PRIORITY_VERY_HIGH
         }
     }
 

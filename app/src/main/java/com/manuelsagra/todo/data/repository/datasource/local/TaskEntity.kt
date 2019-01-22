@@ -9,11 +9,13 @@ import java.util.*
 data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
+    @ColumnInfo(name = "parent_id")
+    val parentId: Long,
     val content: String,
     @ColumnInfo(name = "created_at")
     val createdAt: Date,
     @ColumnInfo(name = "is_done")
     val isDone: Boolean,
-    @ColumnInfo(name = "is_high_priority")
-    val isHighPriority: Boolean
+    @ColumnInfo(name = "priority")
+    val priority: Int
 )

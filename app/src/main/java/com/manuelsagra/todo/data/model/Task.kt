@@ -6,26 +6,29 @@ import java.util.Date
 
 data class Task(
     val id: Long,
+    val parentId: Long,
     val content: String,
     val createdAt: Date,
     val isDone: Boolean,
-    val isHighPriority: Boolean
+    val priority: Int
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readLong(),
         parcel.readString()!!,
         Date(parcel.readLong()),
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readInt()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
+        parcel.writeLong(parentId)
         parcel.writeString(content)
         parcel.writeLong(createdAt.time)
         parcel.writeByte(if (isDone) 1 else 0)
-        parcel.writeByte(if (isHighPriority) 1 else 0)
+        parcel.writeInt(priority)
     }
 
     override fun describeContents(): Int {

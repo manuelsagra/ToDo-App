@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import com.manuelsagra.todo.R
 import com.manuelsagra.todo.data.model.Task
 import com.manuelsagra.todo.ui.tasks.TaskViewModel
-import com.manuelsagra.todo.util.BottomSheetDialog
+import com.manuelsagra.todo.util.*
 import kotlinx.android.synthetic.main.fragment_edit_task.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,9 +25,9 @@ class EditTaskFragment : BottomSheetDialog() {
             }
     }
 
-    val taskViewModel: TaskViewModel by viewModel()
-
-    var task: Task? = null
+    private val taskViewModel: TaskViewModel by viewModel()
+    private var task: Task? = null
+    private var priority: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_task, container, false)
@@ -65,16 +65,39 @@ class EditTaskFragment : BottomSheetDialog() {
         }
 
         inputTaskContent.setText(task!!.content)
-        checkHighPriority.isChecked = task!!.isHighPriority
+        when (task!!.priority) {
+            TASK_PRIORITY_LOW -> radioPriorityLow.isChecked = true
+            TASK_PRIORITY_MEDIUM -> radioPriorityMedium.isChecked = true
+            TASK_PRIORITY_HIGH -> radioPriorityHigh.isChecked = true
+            TASK_PRIORITY_VERY_HIGH -> radioPriorityVeryHigh.isChecked = true
+        }
     }
 
     private fun bindActions() {
         buttonSaveTask.setOnClickListener {
+            // TODO: Priority
             val newTask = task!!.copy(
                 content = inputTaskContent.text.toString(),
-                isHighPriority = checkHighPriority.isChecked)
+                priority = priority
+            )
 
             taskViewModel.updateTask(newTask)
+        }
+
+        radioPriorityLow.setOnClickListener {
+            priority = TASK_PRIORITY_LOW
+        }
+
+        radioPriorityMedium.setOnClickListener {
+            priority = TASK_PRIORITY_MEDIUM
+        }
+
+        radioPriorityHigh.setOnClickListener {
+            priority = TASK_PRIORITY_HIGH
+        }
+
+        radioPriorityVeryHigh.setOnClickListener {
+            priority = TASK_PRIORITY_VERY_HIGH
         }
     }
 

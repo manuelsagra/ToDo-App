@@ -19,13 +19,38 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
-            android:id="@+id/checkHighPriority"
-            android:layout_width="match_parent"
+    <RadioGroup
+            android:id="@+id/groupPriority"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_task_is_high_priority"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp">
+        <RadioButton
+                android:id="@+id/radioPriorityLow"
+                android:text="@string/priority_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        <RadioButton
+                android:id="@+id/radioPriorityMedium"
+                android:text="@string/priority_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        <RadioButton
+                android:id="@+id/radioPriorityHigh"
+                android:text="@string/priority_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        <RadioButton
+                android:id="@+id/radioPriorityVeryHigh"
+                android:text="@string/priority_very_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+        />
+    </RadioGroup>
 
     <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"

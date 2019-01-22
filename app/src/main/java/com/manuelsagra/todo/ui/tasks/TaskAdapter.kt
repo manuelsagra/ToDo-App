@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.manuelsagra.todo.R
 import com.manuelsagra.todo.data.model.Task
-import com.manuelsagra.todo.util.DateHelper
+import com.manuelsagra.todo.util.*
 import kotlinx.android.synthetic.main.item_task.view.*
 
 class TaskAdapter(val listener: Listener) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffUtil.getInstance()) {
@@ -25,7 +25,7 @@ class TaskAdapter(val listener: Listener) : ListAdapter<Task, TaskAdapter.TaskVi
         fun onTaskClicked(task: Task)
         fun onTaskMarked(task: Task, isDone: Boolean)
         fun onTaskLongClicked(task: Task)
-        fun onTaskHighPriorityMarked(task: Task, isHighPriority: Boolean)
+        fun onTaskPriorityChanged(task: Task, priority: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -46,7 +46,7 @@ class TaskAdapter(val listener: Listener) : ListAdapter<Task, TaskAdapter.TaskVi
                 } else {
                     removeStrikethrough(textContent, task.content)
                 }
-                applyColorToHighPriority(itemView.findViewById(R.id.buttonHighPriority), task.isHighPriority)
+                applyColorToPriority(itemView.findViewById(R.id.buttonPriority), task.priority)
 
                 textDate.text = DateHelper.calculateTimeAgo(task.createdAt)
 
@@ -72,19 +72,20 @@ class TaskAdapter(val listener: Listener) : ListAdapter<Task, TaskAdapter.TaskVi
 
                     executeAnimation(itemView, isChecked)
                 }
-                buttonHighPriority.setOnClickListener {
-                    val isHighPriority = !task.isHighPriority
+                buttonPriority.setOnClickListener {
+                    val priority = (task.priority + 1) % TASK_PRIORITIES
 
-                    listener.onTaskHighPriorityMarked(task, isHighPriority)
+                    listener.onTaskPriorityChanged(task, priority)
                 }
             }
         }
 
-        private fun applyColorToHighPriority(view: ImageButton, isHighPriority: Boolean) {
-            if (isHighPriority) {
-                view.setColorFilter(Color.RED)
-            } else {
-                view.setColorFilter(Color.WHITE)
+        private fun applyColorToPriority(view: ImageButton, priority: Int) {
+            when (priority) {
+                TASK_PRIORITY_VERY_HIGH -> view.setColorFilter(Color.RED)
+                TASK_PRIORITY_HIGH -> view.setColorFilter(Color.MAGENTA)
+                TASK_PRIORITY_MEDIUM -> view.setColorFilter(Color.YELLOW)
+                else -> view.setColorFilter(Color.WHITE)
             }
         }
 
