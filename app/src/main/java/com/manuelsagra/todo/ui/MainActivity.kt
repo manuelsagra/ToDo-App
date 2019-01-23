@@ -26,18 +26,22 @@ class MainActivity : BaseActivity() {
     private fun setUp() {
         bindActions()
 
+        val fragment = TaskFragment()
+        val bundle = Bundle()
+        bundle.putLong("parentId", 0)
+        fragment.arguments = bundle
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, TaskFragment())
+            .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
 
     private fun bindActions() {
-        fab
+        fabAddTask
             .clicks()
             .throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                Navigator.navigateToNewTaskActivity(this)
+                Navigator.navigateToNewTaskActivity(0,this)
             }
             .addTo(compositeDisposable)
     }

@@ -17,13 +17,9 @@ import java.util.*
 class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
 
     val tasksEvent = MutableLiveData<List<Task>>()
-
     val newTaskAddedEvent = MutableLiveData<Event<Unit>>()
     val taskUpdatedEvent = MutableLiveData<Event<Task>>()
-
-    init {
-        loadTasks()
-    }
+    val taskDeletedEvent = MutableLiveData<Event<Unit>>()
 
     fun loadTasks() {
         taskRepository
@@ -40,8 +36,23 @@ class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
             ).addTo(compositeDisposable)
     }
 
-    fun addNewTask(taskContent: String, priority: Int) {
-        val newTask = Task(0, 0, taskContent, Date(), false, priority)
+    fun loadSubtasks(parentId: Long) {
+        taskRepository
+            .observeSubtasks(parentId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { tasks ->
+                    tasksEvent.value = tasks
+                },
+                onError = {
+                    Log.e("TaskViewModel", "Error: $it")
+                }
+            ).addTo(compositeDisposable)
+    }
+
+    fun addNewTask(taskContent: String, priority: Int, parentId: Long) {
+        val newTask = Task(0, if (parentId == 0L) null else parentId, taskContent, Date(), false, priority)
 
         Completable.fromCallable {
             taskRepository.insert(newTask)
@@ -67,6 +78,7 @@ class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onComplete = {
+                    taskDeletedEvent.call()
                 },
                 onError = {
                     Log.e("TaskViewModel", "$it")

@@ -52,13 +52,18 @@ class TaskAdapter(val listener: Listener) : ListAdapter<Task, TaskAdapter.TaskVi
 
                 checkIsDone.isChecked = task.isDone
 
-                setOnClickListener {
-                    listener.onTaskClicked(task)
+                // Only main tasks have subtasks
+                if (task.parentId == null) {
+                    setOnClickListener {
+                        listener.onTaskClicked(task)
+                    }
                 }
+
                 setOnLongClickListener {
                     listener.onTaskLongClicked(task)
                     true
                 }
+
                 checkIsDone.setOnClickListener {
                     val isChecked = (it as CheckBox).isChecked
 

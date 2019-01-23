@@ -10,6 +10,8 @@ interface TaskRepository {
 
     fun observeAll(): Flowable<List<Task>>
 
+    fun observeSubtasks(parentId: Long): Flowable<List<Task>>
+
     fun getTaskById(taskId: Long): Single<Task>
 
     fun insert(task: Task)

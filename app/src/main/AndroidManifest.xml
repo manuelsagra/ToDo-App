@@ -25,6 +25,8 @@
 
         <activity android:name=".ui.newtask.NewTaskActivity"/>
 
+        <activity android:name=".ui.viewtask.ViewTaskActivity"/>
+
     </application>
 
 </manifest>

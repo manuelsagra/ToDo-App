@@ -18,7 +18,7 @@ val appModule = module {
 
     single { TaskEntityMapper() }
 
-    single<TodoDatabase> {
+    single {
         Room.databaseBuilder(androidContext(), TodoDatabase::class.java, "todo.db")
             .build()
     }

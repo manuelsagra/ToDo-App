@@ -17,12 +17,15 @@ class NewTaskActivity : BaseActivity() {
 
     private val taskViewModel: TaskViewModel by viewModel()
     private var priority: Int = 0
+    private var parentId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
         setUpToolbar(true)
         setTitle(R.string.new_task_title)
+
+        parentId = intent.getLongExtra("parentId", 0)
 
         bindObserver()
         bindActions()
@@ -45,8 +48,7 @@ class NewTaskActivity : BaseActivity() {
 
     private fun bindActions() {
         buttonSaveTask.setOnClickListener {
-            // TODO Priority
-            taskViewModel.addNewTask(inputTaskContent.text.toString(), priority)
+            taskViewModel.addNewTask(inputTaskContent.text.toString(), priority, parentId)
         }
 
         radioPriorityLow.setOnClickListener {

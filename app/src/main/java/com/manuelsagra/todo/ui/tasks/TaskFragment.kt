@@ -20,9 +20,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskFragment : Fragment(), TaskAdapter.Listener {
 
-    val taskViewModel: TaskViewModel by viewModel()
-
-    val adapter: TaskAdapter by lazy {
+    private val taskViewModel: TaskViewModel by viewModel()
+    private val adapter: TaskAdapter by lazy {
         TaskAdapter(this)
     }
 
@@ -38,6 +37,15 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
     private fun setUp() {
         setUpRecycler()
 
+        arguments?.let {
+            val parentIdArgument = it.getLong("parentId")
+            if (parentIdArgument != 0L) {
+                taskViewModel.loadSubtasks(parentIdArgument)
+            } else {
+                taskViewModel.loadTasks()
+            }
+        }
+
         with (taskViewModel) {
             tasksEvent.observe(this@TaskFragment, Observer { tasks ->
                 adapter.submitList(tasks)
@@ -52,7 +60,7 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
     }
 
     override fun onTaskClicked(task: Task) {
-
+        Navigator.navigateToViewTaskActivity(task, context!!)
     }
 
     override fun onTaskLongClicked(task: Task) {
