@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ToDo</string>
+    <string name="new_task_title">Nueva tarea</string>
+    <string name="new_task_input_hint">Contenido de la nueva tarea</string>
+    <string name="new_task_save_button">Guardar</string>
+    <string name="delete">Borrar</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+    <string name="delete_task_title">¿Estás seguro?</string>
+    <string name="priority_very_high">Prioridad muy alta</string>
+    <string name="delete_task_message">La tarea se eliminará definitivamente. No podrás recuperarla.</string>
+    <string name="view_task_title">Detalle de la tarea</string>
+    <string name="priority_medium">Prioridad media</string>
+    <string name="priority_low">Prioridad baja</string>
+    <string name="priority_high">Prioridad alta</string>
+    <string name="edit_task_input_hint">Editar contenido de la tarea</string>
+    <string name="edit">Editar</string>
+    <string name="add_subtask">Añadir subtarea</string>
+</resources>

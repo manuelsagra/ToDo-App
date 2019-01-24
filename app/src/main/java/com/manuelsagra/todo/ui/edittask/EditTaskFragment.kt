@@ -1,5 +1,6 @@
 package com.manuelsagra.todo.ui.edittask
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,13 @@ import com.manuelsagra.todo.util.*
 import kotlinx.android.synthetic.main.fragment_edit_task.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class EditTaskFragment : BottomSheetDialog() {
+class EditTaskFragment(): BottomSheetDialog() {
+
+    private var listener: OnDismissListener? = null
+
+    interface OnDismissListener {
+        fun onDismissListener()
+    }
 
     companion object {
         const val PARAM_TASK = "task"
@@ -45,6 +52,13 @@ class EditTaskFragment : BottomSheetDialog() {
         setUp()
     }
 
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        listener?.let {
+            it.onDismissListener()
+        }
+    }
+
     private fun setUp() {
         fillData()
         bindEvents()
@@ -55,6 +69,7 @@ class EditTaskFragment : BottomSheetDialog() {
         with (taskViewModel) {
             taskUpdatedEvent.observe(this@EditTaskFragment, Observer {
                 dismiss()
+
             })
         }
     }
@@ -99,6 +114,10 @@ class EditTaskFragment : BottomSheetDialog() {
         radioPriorityVeryHigh.setOnClickListener {
             priority = TASK_PRIORITY_VERY_HIGH
         }
+    }
+
+    fun setOnDismissListener(listener: OnDismissListener) {
+        this.listener = listener
     }
 
 }

@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="72dp"
-        android:paddingBottom="16dp"
         android:background="?selectableItemBackground"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
         android:clickable="true"
         android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="72dp"
+            android:paddingBottom="16dp">
 
     <TextView
             android:id="@+id/textContent"
@@ -46,6 +52,8 @@
             app:layout_constraintEnd_toStartOf="@+id/checkIsDone"
             android:layout_marginEnd="16dp"
             tools:text="Hace 20 minutos"
+            android:drawableLeft="@drawable/ic_time"
+            android:drawablePadding="4dp"
             style="@style/TaskDate"
             app:layout_constraintStart_toStartOf="@+id/textContent"/>
 
@@ -58,7 +66,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             style="@style/IconButton"
-            app:srcCompat="@drawable/ic_high_priority"
+            android:rotation="180"
+            app:srcCompat="@drawable/ic_priority"
             />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

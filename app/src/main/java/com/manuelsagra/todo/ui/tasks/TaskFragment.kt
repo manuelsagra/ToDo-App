@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.manuelsagra.todo.R
 import com.manuelsagra.todo.data.model.Task
+import com.manuelsagra.todo.util.ItemOffsetDecoration
 import com.manuelsagra.todo.util.Navigator
 import com.manuelsagra.todo.util.bottomsheet.BottomMenuItem
 import com.manuelsagra.todo.util.bottomsheet.BottomSheetMenu
@@ -55,6 +56,7 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
 
     private fun setUpRecycler() {
         recyclerTasks.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        recyclerTasks.addItemDecoration(ItemOffsetDecoration(R.dimen.task_card_offset))
         recyclerTasks.itemAnimator = DefaultItemAnimator()
         recyclerTasks.adapter = adapter
     }
@@ -64,7 +66,7 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
     }
 
     override fun onTaskLongClicked(task: Task) {
-        val items = arrayListOf(
+        var items = arrayListOf(
             BottomMenuItem(R.drawable.ic_edit, getString(R.string.edit)) {
                 Navigator.navigateToEditTaskFragment(task, childFragmentManager)
             },
@@ -72,6 +74,13 @@ class TaskFragment : Fragment(), TaskAdapter.Listener {
                 showConfirmDeleteTaskDialog(task)
             }
         )
+
+        // Add subtasks to main tasks
+        if (task.parentId == null) {
+            items.add(BottomMenuItem(R.drawable.ic_add, getString(R.string.add_subtask)) {
+                Navigator.navigateToNewTaskActivity(task.id, context!!)
+            })
+        }
 
         BottomSheetMenu(activity!!, items).show()
     }

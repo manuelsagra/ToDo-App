@@ -13,6 +13,7 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.manuelsagra.todo.R
 import com.manuelsagra.todo.data.model.Task
 import com.manuelsagra.todo.ui.base.BaseActivity
+import com.manuelsagra.todo.ui.edittask.EditTaskFragment
 import com.manuelsagra.todo.ui.tasks.TaskFragment
 import com.manuelsagra.todo.ui.tasks.TaskViewModel
 import com.manuelsagra.todo.util.*
@@ -23,8 +24,7 @@ import kotlinx.android.synthetic.main.activity_view_task.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
-class ViewTaskActivity : BaseActivity() {
-
+class ViewTaskActivity : BaseActivity(), EditTaskFragment.OnDismissListener {
     private val taskViewModel: TaskViewModel by viewModel()
     private val compositeDisposable = CompositeDisposable()
     private var task: Task? = null
@@ -47,6 +47,16 @@ class ViewTaskActivity : BaseActivity() {
         fillData()
         bindEvents()
         bindActions()
+
+        // Subtasks
+        val fragment = TaskFragment()
+        val bundle = Bundle()
+        bundle.putLong("parentId", task!!.id)
+        fragment.arguments = bundle
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
     }
 
     private fun bindEvents() {
@@ -56,13 +66,17 @@ class ViewTaskActivity : BaseActivity() {
                 finish()
             })
 
-            taskUpdatedEvent.observe(this@ViewTaskActivity, Observer {
+            taskEvent.observe(this@ViewTaskActivity, Observer {
                 if (!it.hasBeenHandled) {
                     task = it.getContentIfNotHandled()
                     fillData()
                 }
             })
         }
+    }
+
+    override fun onDismissListener() {
+        taskViewModel.getTask(task!!.id)
     }
 
     private fun fillData() {
@@ -93,15 +107,6 @@ class ViewTaskActivity : BaseActivity() {
                     textPriority.setTextColor(Color.LTGRAY)
                 }
             }
-
-            val fragment = TaskFragment()
-            val bundle = Bundle()
-            bundle.putLong("parentId", it.id)
-            fragment.arguments = bundle
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit()
         }
     }
 
@@ -131,7 +136,8 @@ class ViewTaskActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?) = when (item!!.itemId) {
         R.id.action_edit -> {
-            Navigator.navigateToEditTaskFragment(task!!, supportFragmentManager)
+            val fragment = Navigator.navigateToEditTaskFragment(task!!, supportFragmentManager)
+            fragment.setOnDismissListener(this)
             true
         }
 

@@ -17,9 +17,14 @@ import java.util.*
 class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
 
     val tasksEvent = MutableLiveData<List<Task>>()
+    val taskEvent = MutableLiveData<Event<Task>>()
     val newTaskAddedEvent = MutableLiveData<Event<Unit>>()
     val taskUpdatedEvent = MutableLiveData<Event<Task>>()
     val taskDeletedEvent = MutableLiveData<Event<Unit>>()
+
+    init {
+        Log.i("TaskViewModel", "INIT!!!!")
+    }
 
     fun loadTasks() {
         taskRepository
@@ -85,6 +90,21 @@ class TaskViewModel(val taskRepository: TaskRepository) : BaseViewModel() {
                 }
             )
             .addTo(compositeDisposable)
+    }
+
+    fun getTask(id: Long) {
+        taskRepository
+            .getTaskById(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { task ->
+                    taskEvent.call(task)
+                },
+                onError = {
+                    Log.e("TaskViewModel", "Error: $it")
+                }
+            ).addTo(compositeDisposable)
     }
 
     fun markAsDone(task: Task) {
